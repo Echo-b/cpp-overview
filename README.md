@@ -12,3 +12,4 @@
 - [x] redis使用
 - [x] redis连接池
 - [ ] c++新特性
+- [x] jsoncpp使用
