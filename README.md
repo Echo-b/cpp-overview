@@ -11,5 +11,7 @@
 - [x] mysql连接池
 - [x] redis使用
 - [x] redis连接池
-- [ ] c++新特性
 - [x] jsoncpp使用
+- [ ] c++新特性
+- [ ] boost库使用
+- [ ] libevent使用
