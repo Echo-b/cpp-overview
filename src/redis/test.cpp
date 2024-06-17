@@ -3,10 +3,20 @@
 #include <string>
 #include <algorithm>
 #include <string.h>
-
+#include "redisConn.h"
+#include "redisConn.cpp"
 
 void log(std::string s, std::string parm = ""){
     std::cout << s << parm << std::endl;
+}
+
+void test2(){
+    redisConn* conn = new redisConn;
+    conn->connect("127.0.0.1", 6379);
+    std::string infos = R"([{"description":"ask students some infos","fields":"["name", "gender","advice"]","id":"1","type":"ask"}])";
+    bool ret = conn->set("infos", infos);
+    log(to_string(ret));
+    log(conn->get("infos"));
 }
 
 void test(){
@@ -18,7 +28,8 @@ void test(){
     }
     log("connect successful");
     const char* commamd1 = "set test1 value1";
-    redisReply* r = (redisReply*) redisCommand(c, commamd1);
+    std::string infos = R"([{"description":"ask students some infos","fields":"["name", "gender","advice"]","id":"1","type":"ask"}])";
+    redisReply* r = (redisReply*) redisCommand(c, "set test1 %s", infos.c_str());
     if(r == NULL){
         log("execut command1 error");
         redisFree(c);
@@ -34,9 +45,9 @@ void test(){
     freeReplyObject(r);
     log("successful execute command:", commamd1);
 
-    const char* command2 = "strlen test1"; 
+    const char* command2 = "get test1"; 
     r = (redisReply*)redisCommand(c, command2); 
-    if ( r->type != REDIS_REPLY_INTEGER) 
+    if ( r->type != REDIS_REPLY_STRING) 
     { 
         printf("Failed to execute command[%s]\n",command2); 
         freeReplyObject(r); 
@@ -44,14 +55,14 @@ void test(){
         return; 
     } 
 
-    int length = r->integer;
+    std::string msg = r->str;
     freeReplyObject(r);
-    log("the length of test1 is:", std::to_string(length));
+    log("the content of test1 is:", msg);
     log("Succeed to execute command", command2);
 
 }
 
 int main(){
-    test();
+    test2();
     return 0;
 }

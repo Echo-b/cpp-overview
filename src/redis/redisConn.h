@@ -20,12 +20,12 @@ public:
     redisConn();
     bool connect(string ip, uint32_t port);
     string get(string key);
-    string execute(string command);
+    string execute(string type, string key, string value = "");
     bool set(string key, string value);
     bool update(string key, string value);
     bool del(string key);
     void log(string info, string parm = "");
-    string setCommand(string type, string key, string value = "");
+    redisReply* setCommand(string type, string key, string value = "");
     void refreshAliveTime();
     long long getAliveTime();
     ~redisConn();
