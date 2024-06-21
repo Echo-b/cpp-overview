@@ -9,6 +9,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <cstring>
+#include <iomanip>
 #include "msgNode.h"
 
 
@@ -40,11 +41,13 @@ public:
     void send(char *msg, int maxlen);
     void close();
     std::shared_ptr<Session> sharedSelf();
+    void printRecvData(char* data, int length);
     ~Session();
 
 private:
     void handleRead(const boost::system::error_code &ec, std::size_t bytesTransfreed, std::shared_ptr<Session> shared_self);
     void handleWrite(const boost::system::error_code &ec, std::shared_ptr<Session> shared_self);
+
 };
 
 
