@@ -9,11 +9,13 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <cstring>
+#include <thread>
 #include <iomanip>
 #include "msgNode.h"
 
 
 #define MAX_LENGTH  1024*2
+#define MAX_SENDQUE 1000
 
 using namespace boost;
 class Server;

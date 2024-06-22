@@ -51,6 +51,7 @@ void Session::handleRead(const boost::system::error_code &ec, std::size_t bytesT
                 // get head data
                 short dataLen = 0;
                 memcpy(&dataLen, recvHeadNode->data, HEAD_LENGTH);
+                dataLen = boost::asio::detail::socket_ops::network_to_host_short(dataLen);
                 std::cout << "data len:" << dataLen << std::endl;
                 if(dataLen > MAX_LENGTH){
                     std::cout << "invalid data length is: " << dataLen << std::endl;
@@ -150,17 +151,18 @@ std::string &Session::getUuid(){
 }
 
 void Session::send(char *msg, int maxlen){
-    bool pending = false;
     std::unique_lock<std::mutex> sendMutex(smutex);
-    if(sendQue.size() > 0){
-        pending = true;
-    }
-    sendQue.push(std::make_shared<msgNode>(msg, maxlen));
-    if(pending){
+    int qSize = sendQue.size();
+    if(qSize > MAX_SENDQUE){
+        std::cout << "session: " << uuid << "send que fulled size is :" << MAX_SENDQUE << std::endl;
         return;
     }
-
-    boost::asio::async_write(sock, asio::buffer(msg, maxlen),
+    sendQue.push(std::make_shared<msgNode>(msg, maxlen));
+    if(qSize > 0){
+        return;
+    }
+    auto &msgnode = sendQue.front(); 
+    boost::asio::async_write(sock, asio::buffer(msgnode->data, msgnode->totalLen),
     std::bind(&Session::handleWrite, this, std::placeholders::_1, sharedSelf()));
 
 }

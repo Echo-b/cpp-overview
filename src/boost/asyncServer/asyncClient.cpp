@@ -2,6 +2,7 @@
 #include <boost/asio.hpp>
 #include <cstring>
 #include <chrono>
+#include <thread>
 
 using namespace boost;
 const int MAXLENGTH = 1024 * 2;
@@ -29,7 +30,8 @@ int main(){
                 const char *request = "hello world";
                 std::size_t reqLen = strlen(request);
                 char sendData[MAXLENGTH] = {0};
-                memcpy(sendData, &reqLen, HEAD_LENGTH);
+                short tLen = asio::detail::socket_ops::host_to_network_short(reqLen);
+                memcpy(sendData, &tLen, HEAD_LENGTH);
                 memcpy(sendData + 2, request, reqLen);
                 boost::asio::write(sock, asio::buffer(sendData, reqLen + HEAD_LENGTH));
             }
@@ -42,6 +44,7 @@ int main(){
                 std::size_t replayLen = boost::asio::read(sock, asio::buffer(replayHead, HEAD_LENGTH));
                 short msgLen = 0;
                 memcpy(&msgLen, replayHead, HEAD_LENGTH);
+                msgLen = asio::detail::socket_ops::network_to_host_short(msgLen);
                 char msg[MAXLENGTH] = {0};
                 std::size_t msgLength = boost::asio::read(sock, asio::buffer(msg, msgLen));
 
