@@ -7,7 +7,8 @@
 #include <map>
 #include <mutex>
 #include "session.h"
-// #include "session.cpp"
+#include "IoServicePool.h"
+
 
 using namespace boost;
 

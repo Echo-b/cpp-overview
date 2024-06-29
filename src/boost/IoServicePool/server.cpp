@@ -1,5 +1,4 @@
 #include "server.h"
-#include "session.cpp"
 #include "IoServicePool.h"
 
 Server::Server(asio::io_context &_ioc, unsigned short _port) : ioc(_ioc), 

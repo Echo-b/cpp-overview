@@ -1,8 +1,6 @@
 #include <boost/asio.hpp>
 #include "server.h"
-#include "server.cpp"
 #include "IoThreadPool.h"
-#include "IoThreadPool.cpp"
 
 int main(){
     try

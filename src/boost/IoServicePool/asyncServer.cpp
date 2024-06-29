@@ -1,8 +1,6 @@
 #include <boost/asio.hpp>
 #include "server.h"
-#include "server.cpp"
 #include "IoServicePool.h"
-#include "IoServicePool.cpp"
 
 
 int main(){

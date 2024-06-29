@@ -1,7 +1,7 @@
 #include "session.h"
 #include "server.h"
 #include "logicSystem.h"
-#include "logicSystem.cpp"
+// #include "logicSystem.cpp"
 // #include "server.cpp"
 
 logicNode::logicNode(std::shared_ptr<Session> _session, std::shared_ptr<recvNode> _recvnode): session(_session), recvnode(_recvnode){

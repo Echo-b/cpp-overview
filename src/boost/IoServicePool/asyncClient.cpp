@@ -25,7 +25,7 @@ int main(){
                 sock.connect(ep, ec);
                 if(ec == asio::error::host_not_found){
                     std::cout << "connect error" << "code is:" << ec.value() << std::endl;
-                    return 0;
+                    return;
                 }   
 
                 int j = 0; 
